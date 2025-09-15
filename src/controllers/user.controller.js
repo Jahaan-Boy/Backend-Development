@@ -187,7 +187,7 @@ const registerUser=asyncHandler( async (req,res)=>{
                 secure:true
             }
     
-            const {newRefreshToken,accessToken}=await generateAccessAndRefreshTokens(user._id);
+            const {refreshToken:newRefreshToken,accessToken}=await generateAccessAndRefreshTokens(user._id);
     
             return res.status(200).
             cookie("accessToken",accessToken,options).
@@ -208,7 +208,7 @@ const registerUser=asyncHandler( async (req,res)=>{
     const changeCurrentPassword=asyncHandler(async(req,res)=>{
         const {oldPassword, newPassword}=req.body;
 
-        const user=await User.findById(req,user?._id);
+        const user=await User.findById(req.user?._id);
         const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
         if(!isPasswordCorrect){
@@ -243,7 +243,6 @@ const registerUser=asyncHandler( async (req,res)=>{
                     email:email
                 }
             },
-            {},
             {new:true})
             .select("-password");
 
@@ -288,7 +287,7 @@ const registerUser=asyncHandler( async (req,res)=>{
 
         const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
-        if(!coverImageLocalPath.url){
+        if(!coverImage.url){
             throw new ApiError(400,"Error while uploading on coverImage");
         }
 
