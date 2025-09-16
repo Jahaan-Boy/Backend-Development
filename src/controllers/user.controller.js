@@ -3,9 +3,7 @@ import {ApiError} from '../utils/ApiError.js'
 import {User} from '../models/user.model.js'
 import {uploadOnCloudinary} from '../utils/cloudinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
-import { access } from 'fs'
 import  jwt  from 'jsonwebtoken'
-import { lookup } from 'dns'
 import mongoose from 'mongoose'
 
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -382,7 +380,7 @@ const registerUser=asyncHandler( async (req,res)=>{
         const user = await User.aggregate([
         {
             $match:{
-                _id: new mongoose.Types.ObjectId(req.user._id)
+                _id: new mongoose.Schema.Types.ObjectId(req.user._id)
             }
         },
         {
