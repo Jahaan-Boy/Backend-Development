@@ -213,7 +213,7 @@ const registerUser=asyncHandler( async (req,res)=>{
             throw new ApiError(400,"Invalid old password");
         }
 
-        user.password=password;
+        user.password=newPasswordassword;
         await user.save({validateBeforeSave:false});
     
         return res.status(200).
